@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Runningman</string>
+    <string name="button">Touch to play</string>
+    <string name="textview">\@Teamme</string>
+    <string name="x">X</string>
+    <string name="y">Y</string>
+    <string name="textview4">___________________________</string>
+    <string name="button1">Jump</string>
+</resources>
