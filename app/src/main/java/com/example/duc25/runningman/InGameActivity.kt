@@ -1,21 +1,22 @@
 package com.example.duc25.runningman
 
 import android.annotation.SuppressLint
+import android.content.Intent
+import android.graphics.BitmapFactory
 import android.graphics.Point
 import android.os.AsyncTask
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.WindowManager
-import android.widget.ImageView
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_in_game.*
 import java.util.*
 import kotlin.concurrent.scheduleAtFixedRate
 
-
 class InGameActivity : AppCompatActivity() {
     var Land: Land? = null
     var Man: Man? = null
+    var textGame: textGame? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
@@ -29,8 +30,11 @@ class InGameActivity : AppCompatActivity() {
         /* --LAND--*/
         Land = Land(this, screenW, screenH)
         RelativeLayout.addView(Land)
+        /*--textGame*/
+        textGame = textGame(this, screenW, screenH)
+        RelativeLayout.addView(textGame)
         /*--GameUpDate*/
-        GameUpdate().execute()
+        GameUpdate(screenW).execute()
     }
 
     fun gameOver(Land: Land){
@@ -57,31 +61,65 @@ class InGameActivity : AppCompatActivity() {
     }
 
     @SuppressLint("StaticFieldLeak")
-    inner class GameUpdate: AsyncTask<Void, String, Float>() {
-        override fun doInBackground(vararg p0: Void?): Float {
-            val timer = Timer()
-            var XMan: Float?
-            var XLand: Float?
-            var i = 0
-            timer.scheduleAtFixedRate(0, 1){
-                XMan = Man!!.getXMan()
-                XLand = Land!!.getXLand()
-                if(XLand!! <= XMan!!){
-                    //i++
-                    //publishProgress("Game Over $i")
+    inner class GameUpdate(val screenW: Float): AsyncTask<Void, String, Float>() {
+        val timer = Timer()
+        var columOver = 0
+        var game_Over = 0
+
+        fun Score(){
+            if(game_Over == 0) {
+                if((Land!!.getXLand()!! + screenW * 0.02F) < Man!!.getXMan()) {
+                    columOver++
+                    if(columOver == 1) {
+                        publishProgress("UpdateScore")
+                    }
+                }else {
+                    columOver = 0
                 }
             }
+        }
+
+        fun gameOver(){
+            if(Land!!.getXLand() <= (Man!!.getXMan()+Man!!.getWidthMan()) && Land!!.getXLand()>Man!!.getXMan()  && (Man!!.getYMan()!!+Man!!.getHeightMan()) >= Land!!.getYLand()){
+                //Land!!.valueAnimation.cancel()
+                game_Over++
+                if(game_Over == 1){
+                    publishProgress("GameOver")
+                }
+            }
+        }
+
+        fun Update(){
+            timer.scheduleAtFixedRate(0, 100){
+                gameOver()
+                //publishProgress("" + (Man!!.getYMan()+Man!!.getHeightMan()))
+                Score()
+            }
+        }
+
+        override fun doInBackground(vararg p0: Void?): Float {
+            Update()
             return Land!!.getXLand()
         }
 
         override fun onProgressUpdate(vararg values: String?) {
             super.onProgressUpdate(*values)
-            Toast.makeText(this@InGameActivity, values[0].toString(),Toast.LENGTH_LONG).show()
+            if(values[0] == "UpdateScore"){
+                textGame!!.updateScore()
+            }
+            if(values[0] == "GameOver"){
+                Man!!.valueAnimation.cancel()
+                Man!!.timer.cancel()
+                Land!!.valueAnimation.cancel()
+                val intent = Intent(this@InGameActivity, GameOverActivity::class.java)
+                intent.putExtra("score", textGame!!.getScore().toString())
+                startActivity(intent)
+                finish()
+            }
         }
 
         override fun onPostExecute(result: Float?) {
             super.onPostExecute(result)
         }
     }
-
 }

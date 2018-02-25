@@ -1,5 +1,6 @@
 package com.example.duc25.runningman
 
+import android.animation.TimeInterpolator
 import android.animation.ValueAnimator
 import android.content.Context
 import android.graphics.Canvas
@@ -14,12 +15,12 @@ import java.util.*
  */
 class Land(context: Context, var screenW: Float, var screenH: Float): View(context){
     var random = Random()
-    var near1: Float = (screenW/100)*60F
-    var near2: Float = (screenW/100)*40F
+    var near1: Float = screenW*0.6F
+    var near2: Float = screenW*0.4F
     var near3: Float = screenW
     var rand1 = random(20F, 30F)
     var rand2 = random(20F, 30F)
-    var rand3 = random(20F, 35F)
+    var rand3 = random(20F, 30F)
     val valueAnimation = ValueAnimator.ofFloat(near3, 0F)//giam tu trai qua phai
     var check = 1
 
@@ -58,8 +59,8 @@ class Land(context: Context, var screenW: Float, var screenH: Float): View(conte
         valueAnimation.start()
     }
 
-    fun getYLand(){
-
+    fun getYLand(): Float{
+        return screenH - ((screenH/100)*rand3)
     }
 
     fun getXLand(): Float{
@@ -73,14 +74,14 @@ class Land(context: Context, var screenW: Float, var screenH: Float): View(conte
     fun drawCollums(canvas: Canvas, hight: Float, near: Float){
         val paint = Paint(Paint.ANTI_ALIAS_FLAG)//pass param khử răng cưa
         paint.setARGB(255, 77, 38, 0)
-        paint.setStrokeWidth((screenW /100)*3)
-        canvas.drawLine(near, ((screenH/100)*100) - ((screenH/100)*10), near, ((screenH/100)*100) - ((screenH/100)*hight), paint)
+        paint.setStrokeWidth(screenW*0.02F)
+        canvas.drawLine(near, (screenH*0.72F + screenW*0.07F), near, (screenH - ((screenH/100)*hight)), paint)
     }
 
     fun drawLand(canvas: Canvas){
         val paint = Paint(Paint.ANTI_ALIAS_FLAG)//pass param khử răng cưa
         paint.setARGB(255, 77, 38, 0)
-        paint.setStrokeWidth(((screenH/100)*100) - ((screenH/100)*70))
-        canvas.drawLine(0F, height.toFloat(), width.toFloat(), height.toFloat(), paint)
+        paint.setStrokeWidth(screenW*2)
+        canvas.drawLine(0F, (screenH*0.72F + screenW*0.07F), 0F, screenH, paint)
     }
 }

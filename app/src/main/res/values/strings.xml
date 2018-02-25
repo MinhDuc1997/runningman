@@ -6,4 +6,6 @@
     <string name="y">Y</string>
     <string name="textview4">___________________________</string>
     <string name="button1">Jump</string>
+    <string name="textview2">Game Over</string>
+    <string name="button2">Tap to Again</string>
 </resources>

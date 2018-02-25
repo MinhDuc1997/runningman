@@ -9,14 +9,24 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity" android:noHistory="true">
+        <activity
+            android:name=".MainActivity"
+            android:noHistory="true"
+            android:screenOrientation="reverseLandscape">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".InGameActivity"></activity>
+        <activity
+            android:name=".InGameActivity"
+            android:noHistory="true"
+            android:screenOrientation="reverseLandscape">
+        </activity>
+        <activity android:name=".GameOverActivity"
+            android:noHistory="true"
+            android:screenOrientation="reverseLandscape"></activity>
     </application>
 
 </manifest>
