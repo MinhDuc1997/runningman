@@ -21,9 +21,10 @@ class Man(contex: Context, var screenW: Float, var screenH: Float): View(contex)
     var x1: Float = screenW*0.15F
     var y1: Float = screenH*0.72F
     val paint = Paint(Paint.ANTI_ALIAS_FLAG)//pass param khử răng cưa
-    val valueAnimation = ValueAnimator.ofFloat(y1, screenH*0.15F)
+    val valueAnimation = ValueAnimator.ofFloat(y1, screenH*0.3F)
     val timer = Timer()
     var run = 1
+
     //control jump
     override fun onTouchEvent(event: MotionEvent): Boolean{
         if(event.action == MotionEvent.ACTION_DOWN){

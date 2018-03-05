@@ -17,6 +17,8 @@ class InGameActivity : AppCompatActivity() {
     var Land: Land? = null
     var Man: Man? = null
     var textGame: textGame? = null
+    var game_Over = 0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
@@ -35,14 +37,6 @@ class InGameActivity : AppCompatActivity() {
         RelativeLayout.addView(textGame)
         /*--GameUpDate*/
         GameUpdate(screenW).execute()
-    }
-
-    fun gameOver(Land: Land){
-        val time = Timer()
-        time.scheduleAtFixedRate(0, 5000){
-            val posXland = Land.getXLand()
-            Toast.makeText(this@InGameActivity,  posXland.toString(),Toast.LENGTH_LONG).show()
-        }
     }
 
     fun getWidthHeigh(screen: String): Float{
@@ -64,11 +58,10 @@ class InGameActivity : AppCompatActivity() {
     inner class GameUpdate(val screenW: Float): AsyncTask<Void, String, Float>() {
         val timer = Timer()
         var columOver = 0
-        var game_Over = 0
 
         fun Score(){
             if(game_Over == 0) {
-                if((Land!!.getXLand()!! + screenW * 0.02F) < Man!!.getXMan()) {
+                if((Land!!.getXCollum(1)!! + screenW * 0.02F) < Man!!.getXMan() || (Land!!.getXCollum(0)!! + screenW * 0.02F) < Man!!.getXMan()) {
                     columOver++
                     if(columOver == 1) {
                         publishProgress("UpdateScore")
@@ -80,8 +73,8 @@ class InGameActivity : AppCompatActivity() {
         }
 
         fun gameOver(){
-            if(Land!!.getXLand() <= (Man!!.getXMan()+Man!!.getWidthMan()) && Land!!.getXLand()>Man!!.getXMan()  && (Man!!.getYMan()!!+Man!!.getHeightMan()) >= Land!!.getYLand()){
-                //Land!!.valueAnimation.cancel()
+            if(Land!!.getXCollum(1) <= (Man!!.getXMan()+Man!!.getWidthMan()) && Land!!.getXCollum(1)>Man!!.getXMan()  && (Man!!.getYMan()!!+Man!!.getHeightMan()) >= Land!!.getYCollum(1) ||
+                    Land!!.getXCollum(0) <= (Man!!.getXMan()+Man!!.getWidthMan()) && Land!!.getXCollum(0)>Man!!.getXMan()  && (Man!!.getYMan()!!+Man!!.getHeightMan()) >= Land!!.getYCollum(0)){
                 game_Over++
                 if(game_Over == 1){
                     publishProgress("GameOver")
@@ -90,16 +83,15 @@ class InGameActivity : AppCompatActivity() {
         }
 
         fun Update(){
-            timer.scheduleAtFixedRate(0, 100){
+            timer.scheduleAtFixedRate(0, 5){
                 gameOver()
-                //publishProgress("" + (Man!!.getYMan()+Man!!.getHeightMan()))
                 Score()
             }
         }
 
         override fun doInBackground(vararg p0: Void?): Float {
             Update()
-            return Land!!.getXLand()
+            return Land!!.getXCollum(1)
         }
 
         override fun onProgressUpdate(vararg values: String?) {
@@ -111,10 +103,11 @@ class InGameActivity : AppCompatActivity() {
                 Man!!.valueAnimation.cancel()
                 Man!!.timer.cancel()
                 Land!!.valueAnimation.cancel()
+                Land!!.valueAnimation1.cancel()
                 val intent = Intent(this@InGameActivity, GameOverActivity::class.java)
                 intent.putExtra("score", textGame!!.getScore().toString())
-                startActivity(intent)
                 finish()
+                startActivity(intent)
             }
         }
 

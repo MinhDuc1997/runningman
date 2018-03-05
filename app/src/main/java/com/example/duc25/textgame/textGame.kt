@@ -18,7 +18,7 @@ class textGame(context: Context, var screenW: Float, var screenH: Float): View(c
     }
 
     fun drawScore(canvas: Canvas){
-        paint.textSize = 60F
+        paint.textSize = screenW*0.025F
         paint.setARGB(255, 77, 38, 0)
         paint.typeface = DEFAULT_BOLD
         canvas.drawText("Score: " + scoreGame, screenW*0.85F, screenH*0.1F, paint)
@@ -40,4 +40,6 @@ class textGame(context: Context, var screenW: Float, var screenH: Float): View(c
         setScore()
         updateDraw()
     }
+
+
 }
