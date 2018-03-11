@@ -24,10 +24,6 @@ class textGame(context: Context, var screenW: Float, var screenH: Float): View(c
         canvas.drawText("Score: " + scoreGame, screenW*0.85F, screenH*0.1F, paint)
     }
 
-    fun updateDraw(){
-        postInvalidateOnAnimation()
-    }
-
     fun setScore(){
         scoreGame += 1
     }
@@ -38,8 +34,7 @@ class textGame(context: Context, var screenW: Float, var screenH: Float): View(c
 
     fun updateScore(){
         setScore()
-        updateDraw()
+        postInvalidateOnAnimation()
     }
-
 
 }

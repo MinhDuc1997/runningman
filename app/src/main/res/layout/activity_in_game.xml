@@ -7,7 +7,7 @@
     tools:context=".InGameActivity">
 
     <RelativeLayout
-        android:id="@+id/RelativeLayout"
+        android:id="@+id/GamePlay"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"

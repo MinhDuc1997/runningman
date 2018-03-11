@@ -1,27 +1,27 @@
 package com.example.duc25.runningman
 
-import android.animation.TimeInterpolator
 import android.animation.ValueAnimator
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Paint
 import android.view.View
 import android.view.animation.LinearInterpolator
-import android.widget.Toast
 import java.util.*
-import kotlin.concurrent.scheduleAtFixedRate
 
 /**
  * Created by duc25 on 1/26/2018.
  */
 class Land(context: Context, var screenW: Float, var screenH: Float): View(context){
+    val paint = Paint(Paint.ANTI_ALIAS_FLAG)//pass param khử răng cưa
     var random = Random()
     var nearArray = arrayOf<Float>(screenW, screenW)
     var randArray = arrayOf<Float>(random(60F, 80F), random(60F, 80F))
     val valueAnimation = ValueAnimator.ofFloat(nearArray[0], 0F)//giam tu trai qua phai
-    val valueAnimation1 = ValueAnimator.ofFloat(nearArray[1], 0F)//giam tu trai qua phai
+    val valueAnimation1 = ValueAnimator.ofFloat(nearArray[1], 0F)
     var checkMove = arrayOf<Int>(1, 1)
     var makeCol = 0
+    var time: Long = 2200
+
     override fun onDraw(canvas: Canvas){
         drawLand(canvas)
         drawCollums(canvas, randArray[0], nearArray[0]) //hight // near
@@ -43,6 +43,19 @@ class Land(context: Context, var screenW: Float, var screenH: Float): View(conte
         return random.nextInt(to.toInt() - from.toInt()) + from
     }
 
+    fun drawLand(canvas: Canvas){
+        val paint = Paint(Paint.ANTI_ALIAS_FLAG)//pass param khử răng cưa
+        paint.setARGB(255, 77, 38, 0)
+        paint.setStrokeWidth(screenW*2)
+        canvas.drawLine(0F, (screenH*0.72F + screenW*0.07F), 0F, screenH, paint)
+    }
+
+    fun drawCollums(canvas: Canvas, hight: Float, near: Float){
+        paint.setARGB(255, 77, 38, 0)
+        paint.setStrokeWidth(screenW*0.02F)
+        canvas.drawLine(near, (screenH*0.72F + screenW*0.07F), near, ((screenH/100)*hight), paint)
+    }
+
     fun moveCollum(Col: Int){
         if(Col == 1) {
             checkMove[0] = 0
@@ -58,7 +71,7 @@ class Land(context: Context, var screenW: Float, var screenH: Float): View(conte
                     postInvalidateOnAnimation()
                 }
             }
-            valueAnimation.duration = 1850
+            valueAnimation.duration = time
             valueAnimation.interpolator = LinearInterpolator()
             valueAnimation.start()
         }else{
@@ -75,7 +88,7 @@ class Land(context: Context, var screenW: Float, var screenH: Float): View(conte
                     postInvalidateOnAnimation()
                 }
             }
-            valueAnimation1.duration = 1850
+            valueAnimation1.duration = time
             valueAnimation1.interpolator = LinearInterpolator()
             valueAnimation1.start()
         }
@@ -101,17 +114,4 @@ class Land(context: Context, var screenW: Float, var screenH: Float): View(conte
         return x
     }
 
-    fun drawCollums(canvas: Canvas, hight: Float, near: Float){
-        val paint = Paint(Paint.ANTI_ALIAS_FLAG)//pass param khử răng cưa
-        paint.setARGB(255, 77, 38, 0)
-        paint.setStrokeWidth(screenW*0.02F)
-        canvas.drawLine(near, (screenH*0.72F + screenW*0.07F), near, ((screenH/100)*hight), paint)
-    }
-
-    fun drawLand(canvas: Canvas){
-        val paint = Paint(Paint.ANTI_ALIAS_FLAG)//pass param khử răng cưa
-        paint.setARGB(255, 77, 38, 0)
-        paint.setStrokeWidth(screenW*2)
-        canvas.drawLine(0F, (screenH*0.72F + screenW*0.07F), 0F, screenH, paint)
-    }
 }

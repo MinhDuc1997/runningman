@@ -12,7 +12,7 @@ import android.os.AsyncTask
 import android.view.MotionEvent
 import android.view.View
 import android.view.animation.LinearInterpolator
-import android.widget.Toast
+import com.example.duc25.audio.audioGame
 import java.util.*
 import kotlin.concurrent.scheduleAtFixedRate
 
@@ -24,20 +24,24 @@ class Man(contex: Context, var screenW: Float, var screenH: Float): View(contex)
     val valueAnimation = ValueAnimator.ofFloat(y1, screenH*0.3F)
     val timer = Timer()
     var run = 1
+    var jum = 1 //when gameover set jump = 0 don't start valueAnimation after cancel
+    var Audio = audioGame(contex)
 
     //control jump
     override fun onTouchEvent(event: MotionEvent): Boolean{
         if(event.action == MotionEvent.ACTION_DOWN){
-            if(getYMan() == (screenH*0.72F)) {
-                moveMan()
+            if(getYMan() >= (screenH*0.72F-10F)) {
+                if(jum == 1) {
+                    valueAnimation.cancel()
+                    moveMan()
+                    Audio.audioJump()
+                }
             }
-            //Toast.makeText(context, event.getY().toString(), Toast.LENGTH_LONG).show()
         }
         return true
     }
 
     override fun onDraw(canvas: Canvas){
-        drawEmemple(canvas)
         drawMan(canvas)
         if(run == 1){
             run = 0
@@ -45,15 +49,16 @@ class Man(contex: Context, var screenW: Float, var screenH: Float): View(contex)
         }
     }
 
-    fun updateDraw(){
-        postInvalidateOnAnimation()
+    fun drawMan(canvas: Canvas){
+        canvas.drawBitmap(Bitmap.createScaledBitmap(bitmap, (screenW*0.07).toInt(), (screenW*0.07).toInt(), true)
+                , x1, y1, paint)
     }
 
     fun moveMan(){
         valueAnimation.addUpdateListener {
             val value = it.animatedValue as Float
             y1 = value
-            updateDraw()
+            postInvalidateOnAnimation()
         }
         valueAnimation.repeatMode = ValueAnimator.REVERSE
         valueAnimation.repeatCount = 1
@@ -79,21 +84,6 @@ class Man(contex: Context, var screenW: Float, var screenH: Float): View(contex)
         return screenW*0.07F
     }
 
-    fun drawMan(canvas: Canvas){
-        canvas.drawBitmap(Bitmap.createScaledBitmap(bitmap, (screenW*0.07).toInt(), (screenW*0.07).toInt(), true)
-                , x1, y1, paint)
-    }
-
-    fun drawEmemple(canvas: Canvas){
-        canvas.drawRGB(255, 219, 77)//BG color
-        paint.setARGB(255, 255, 0, 0)
-        //paint.setStrokeWidth(2f)//set độ dày
-        //canvas.drawLine(0f, 0f, width.toFloat(), height.toFloat(), paint)
-        //paint.setStrokeWidth(10f)
-        //canvas.drawLine(0f, 60f, width.toFloat(), 60f, paint)
-        //paint.setStrokeWidth(15f)//set độ dày
-        //canvas.drawPoint(screenW/2, screenH/2, paint)
-    }
 
     @SuppressLint("StaticFieldLeak")
     inner class ManRun: AsyncTask<Void, String, Float>() {
@@ -122,7 +112,7 @@ class Man(contex: Context, var screenW: Float, var screenH: Float): View(contex)
                 bitmap = BitmapFactory.decodeResource(resources, R.drawable.step1)
 
             }
-            updateDraw()
+            postInvalidateOnAnimation()
         }
 
         override fun onPostExecute(result: Float?) {
