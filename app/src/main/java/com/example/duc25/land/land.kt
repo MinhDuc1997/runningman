@@ -15,12 +15,12 @@ class Land(context: Context, var screenW: Float, var screenH: Float): View(conte
     val paint = Paint(Paint.ANTI_ALIAS_FLAG)//pass param khử răng cưa
     var random = Random()
     var nearArray = arrayOf<Float>(screenW, screenW)
-    var randArray = arrayOf<Float>(random(60F, 80F), random(60F, 80F))
+    var randArray = arrayOf<Float>(random(65F, 80F), random(65F, 80F))
     val valueAnimation = ValueAnimator.ofFloat(nearArray[0], 0F)//giam tu trai qua phai
     val valueAnimation1 = ValueAnimator.ofFloat(nearArray[1], 0F)
     var checkMove = arrayOf<Int>(1, 1)
     var makeCol = 0
-    var time: Long = 2200
+    var time: Long = 0
 
     override fun onDraw(canvas: Canvas){
         drawLand(canvas)
@@ -28,7 +28,7 @@ class Land(context: Context, var screenW: Float, var screenH: Float): View(conte
         if(checkMove[0] == 1){
             moveCollum(1)
         }
-        if(nearArray[0] < random(screenW*0.4F, screenW*0.5F)) {
+        if(nearArray[0] < random(screenW*0.47F, screenW*0.5F)) {
             makeCol = 1
         }
         if(makeCol == 1){
@@ -68,6 +68,7 @@ class Land(context: Context, var screenW: Float, var screenH: Float): View(conte
                     checkMove[0] = 1
                     randArray[0] = random(60F, 80F)
                     nearArray[0] = screenW
+                    valueAnimation.cancel()
                     postInvalidateOnAnimation()
                 }
             }
@@ -85,6 +86,7 @@ class Land(context: Context, var screenW: Float, var screenH: Float): View(conte
                     checkMove[1] = 1
                     randArray[1] = random(60F, 80F)
                     nearArray[1] = screenW
+                    valueAnimation1.cancel()
                     postInvalidateOnAnimation()
                 }
             }

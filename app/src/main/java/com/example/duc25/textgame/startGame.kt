@@ -18,16 +18,55 @@ class startGame(context: Context,var screenW: Float,var screenH: Float): View(co
         drawCopyRight(canvas)
     }
 
-    fun drawButton(): Button {
+    fun drawButtonPlayGame(): Button {
         val button = Button(context)
         button.text = "TAP TO PLAY"
-        button.textSize = screenW*0.01F
         button.width = (screenW*0.33).toInt()
         button.height = (screenH*0.15).toInt()
-        button.x = (screenW*0.5F) - (screenW*0.35F)/2F
-        button.y = screenH*0.5F - (screenH*0.15F)/2F
+        button.textSize = ((screenW*0.33).toInt())*0.03F
+        button.x = (screenW*0.5F) - (screenW*0.33F)/2F
+        button.y = screenH*0.55F - (screenH*0.15F)/2F
         button.setTextColor(Color.WHITE)
         button.setBackgroundColor(resources.getColor(R.color.colorOrange))
+        return button
+    }
+
+    fun drawButtonEasy(): Button {
+        val button = Button(context)
+        button.text = "Easy"
+        button.width = (screenW*0.2).toInt()
+        button.height = (screenH*0.01).toInt()
+        button.textSize = ((screenW*0.33).toInt())*0.025F
+        button.x = screenW*0.15F
+        button.y = screenH*0.3F
+        button.setTextColor(Color.BLACK)
+        button.setBackgroundColor(resources.getColor(R.color.colorWhite))
+        return button
+    }
+
+    fun drawButtonMedium(): Button {
+        val button = Button(context)
+        button.text = "Medium"
+        button.width = (screenW*0.2).toInt()
+        button.height = (screenH*0.01).toInt()
+        button.textSize = ((screenW*0.33).toInt())*0.025F
+        button.x = (screenW*0.5F) - (screenW*0.2F)/2F
+        button.y = screenH*0.3F
+        button.setTextColor(Color.GREEN)
+        button.setBackgroundColor(resources.getColor(R.color.colorWhite))
+        return button
+    }
+
+    fun drawButtonHard(): Button {
+        val button = Button(context)
+        button.text = "Hard"
+        button.width = (screenW*0.2).toInt()
+        button.height = (screenH*0.01).toInt()
+        button.textSize = ((screenW*0.33).toInt())*0.025F
+        button.x = screenW*0.85F - (screenW*0.2F)
+        button.y = screenH*0.3F
+        button.setTextColor(Color.BLACK)
+        button.setBackgroundColor(resources.getColor(R.color.colorWhite))
         return button
     }
 

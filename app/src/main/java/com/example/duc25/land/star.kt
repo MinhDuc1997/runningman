@@ -33,11 +33,11 @@ class Star(context: Context, var screenW: Float, var screenH: Float, var XX: Flo
 
     fun drawStar(canvas: Canvas){
         paint.setARGB(255, 254, 255, 253)
-        paint.setStrokeWidth(5f)//set độ dày
-        for(i in (screenH*0.3F).toInt() downTo 0 ) {
+        paint.setStrokeWidth(screenW*0.003F)//set độ dày
+        for(i in (screenH*0.32F).toInt() downTo 0 ) {
             if(i%200 == 0){
                 //canvas.drawLine(i.toFloat(), rainY, i.toFloat(), rainY+(screenH*0.015F), paint)
-                canvas.drawPoint(starX+rand1, i.toFloat()+rand , paint)
+                canvas.drawPoint(starX + (screenW * (rand1 * 0.005F)), i.toFloat() + (screenW * (rand * 0.0007F)), paint)
             }
         }
     }
@@ -52,12 +52,12 @@ class Star(context: Context, var screenW: Float, var screenH: Float, var XX: Flo
             }
             else{
                 check = 1
-                starX = XX
+                starX = screenW
                 valueAnimation.cancel()
                 postInvalidateOnAnimation()
             }
         }
-        valueAnimation.duration = (XX/0.1).toLong()
+        valueAnimation.duration = (XX/0.05).toLong()
         valueAnimation.interpolator = LinearInterpolator()
         valueAnimation.start()
     }

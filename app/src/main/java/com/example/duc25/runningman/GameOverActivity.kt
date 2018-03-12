@@ -18,15 +18,24 @@ class GameOverActivity : AppCompatActivity() {
         setContentView(R.layout.activity_game_over)
 
         val score = intent.getStringExtra("score").toInt()
+        val level = intent.getStringExtra("level")
         val screenW = getWidthHeigh("width")
         val screenH = getWidthHeigh("height")
         val gameOver = gameOver(this, screenW, screenH)
         gameOver.score = score
-        val button = gameOver.drawButton()
-        GameOver.addView(button)
+        val buttonPlayAgain = gameOver.drawButtonPlayAgain()
+        val buttonMenu = gameOver.drawButtonMenu()
+        GameOver.addView(buttonPlayAgain)
+        GameOver.addView(buttonMenu)
         GameOver.addView(gameOver)
-        button.setOnClickListener(){
+        buttonMenu.setOnClickListener(){
+            val intent = Intent(this@GameOverActivity, MainActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
+        buttonPlayAgain.setOnClickListener(){
             val intent = Intent(this@GameOverActivity, InGameActivity::class.java)
+            intent.putExtra("level", "$level")
             startActivity(intent)
             finish()
         }

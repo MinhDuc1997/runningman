@@ -42,22 +42,35 @@ class gameOver(context: Context, var screenW: Float, var screenH: Float): View(c
         paint.typeface = Typeface.DEFAULT_BOLD
         paint.textAlign = Paint.Align.CENTER
         paint.setARGB(255, 255, 156, 7)
-        canans.drawText("Game Over", screenW*0.5F, screenH*0.35F, paint)
+        canans.drawText("Game Over", screenW*0.5F, screenH*0.25F, paint)
         paint.textSize = screenW*0.026F
         paint.setARGB(255, 8, 175, 43)
-        canans.drawText("Score: $score  Max: " + readScore(), screenW*0.5F, screenH*0.425F, paint)
+        canans.drawText("Score: $score  Max: " + readScore(), screenW*0.5F, screenH*0.325F, paint)
     }
 
-    fun drawButton(): Button{
+    fun drawButtonPlayAgain(): Button{
         val button = Button(context)
         button.text = "TAP TO AGAIN"
-        button.textSize = screenW*0.01F
         button.width = (screenW*0.33).toInt()
         button.height = (screenH*0.15).toInt()
-        button.x = (screenW*0.5F) - (screenW*0.35F)/2F
-        button.y = screenH*0.47F
+        button.textSize = ((screenW*0.33).toInt())*0.03F
+        button.x = (screenW*0.5F) - (screenW*0.33F)/2F
+        button.y = screenH*0.37F
         button.setTextColor(Color.WHITE)
         button.setBackgroundColor(resources.getColor(R.color.colorOrange))
+        return button
+    }
+
+    fun drawButtonMenu(): Button{
+        val button = Button(context)
+        button.text = "Menu"
+        button.width = (screenW*0.22).toInt()
+        button.height = (screenH*0.05).toInt()
+        button.textSize = ((screenW*0.22).toInt())*0.03F
+        button.x = (screenW*0.5F) - (screenW*0.22F)/2F
+        button.y = screenH*0.55F
+        button.setTextColor(Color.BLACK)
+        button.setBackgroundColor(resources.getColor(R.color.colorWhite))
         return button
     }
 }

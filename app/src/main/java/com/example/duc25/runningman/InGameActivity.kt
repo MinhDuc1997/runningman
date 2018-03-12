@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.view.WindowManager
+import android.widget.Toast
 import com.example.duc25.audio.audioGame
 import kotlinx.android.synthetic.main.activity_in_game.*
 import kotlinx.android.synthetic.main.activity_main.*
@@ -22,6 +23,7 @@ class InGameActivity : AppCompatActivity() {
     var textGame: textGame? = null
     var game_Over = 0
     var Audio: audioGame? = null
+    var level = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,6 +33,8 @@ class InGameActivity : AppCompatActivity() {
 
         val screenW:Float = getWidthHeigh("width")
         val screenH:Float = getWidthHeigh("height")
+        level = intent.getStringExtra("level")
+
 
         /*--Background--*/
         val Background = background()
@@ -40,17 +44,29 @@ class InGameActivity : AppCompatActivity() {
         Audio!!.backgroundAudio()
         //Audio!!.audioGOver.stop()
         /*--Star--*/
-        var j = 0
-        for(i in 0 until 50){
-            j += 100
-            Star[i] = Star(this, screenW, screenH, 0F+j)
+        var j:Float = 0F
+        for(i in 0 until 100){
+            Star[i] = Star(this, screenW, screenH, 0F+(screenW*j))
             GamePlay.addView(Star[i])
+            j += 0.02F
         }
         /* --Man--*/
         Man = Man(this, screenW, screenH)
+        when(level){
+            "easy" -> Man!!.time = (screenH*0.3F/((screenH*0.3F)*0.003F)).toLong()
+            "medium" -> Man!!.time = (screenH*0.3F/((screenH*0.3F)*0.0043F)).toLong()
+            "hard" -> Man!!.time = (screenH*0.3F/((screenH*0.3F)*0.0047F)).toLong()
+            else -> Man!!.time = (screenH*0.3F/((screenH*0.3F)*0.0043F)).toLong()
+        }
         GamePlay.addView(Man)
         /* --Land--*/
         Land = Land(this, screenW, screenH)
+        when(level){
+            "easy" -> Land!!.time = (screenW/(screenW*0.00041F)).toLong()
+            "medium" -> Land!!.time = (screenW/(screenW*0.00061F)).toLong()
+            "hard" -> Land!!.time = (screenW/(screenW*0.00076F)).toLong()
+            else -> Land!!.time = (screenW/(screenW*0.00061F)).toLong()
+        }
         GamePlay.addView(Land)
         /*--textGame*/
         textGame = textGame(this, screenW, screenH)
@@ -139,6 +155,7 @@ class InGameActivity : AppCompatActivity() {
                 }
                 val intent = Intent(this@InGameActivity, GameOverActivity::class.java)
                 intent.putExtra("score", textGame!!.getScore().toString())
+                intent.putExtra("level", "$level")
                 finish()
                 startActivity(intent)
             }

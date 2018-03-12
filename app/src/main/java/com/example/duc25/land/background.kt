@@ -18,11 +18,13 @@ class background {
                 ArgbEvaluator(),
                 ContextCompat.getColor(context, R.color.colorORange_2),
                 ContextCompat.getColor(context, R.color.colorOrange),
-                ContextCompat.getColor(context, R.color.colorAccent))
+                ContextCompat.getColor(context, R.color.colorAccent),
+                ContextCompat.getColor(context, R.color.colorMe),
+                ContextCompat.getColor(context, R.color.colorGreen1))
 
         objectAnimation.repeatMode = ValueAnimator.REVERSE
         objectAnimation.repeatCount = 1000000
-        objectAnimation.duration = 30000
+        objectAnimation.duration = 70000
         objectAnimation.start()
     }
 

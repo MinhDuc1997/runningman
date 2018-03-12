@@ -26,6 +26,7 @@ class Man(contex: Context, var screenW: Float, var screenH: Float): View(contex)
     var run = 1
     var jum = 1 //when gameover set jump = 0 don't start valueAnimation after cancel
     var Audio = audioGame(contex)
+    var time: Long = 0
 
     //control jump
     override fun onTouchEvent(event: MotionEvent): Boolean{
@@ -57,12 +58,16 @@ class Man(contex: Context, var screenW: Float, var screenH: Float): View(contex)
     fun moveMan(){
         valueAnimation.addUpdateListener {
             val value = it.animatedValue as Float
-            y1 = value
+            if(value>0){
+                y1 = value
+            }else{
+                valueAnimation.cancel()
+            }
             postInvalidateOnAnimation()
         }
         valueAnimation.repeatMode = ValueAnimator.REVERSE
         valueAnimation.repeatCount = 1
-        valueAnimation.duration = 400
+        valueAnimation.duration = time
         //valueAnimation.interpolator = AccelerateInterpolator(1.5f) // tang toc
         valueAnimation.interpolator = LinearInterpolator()
         valueAnimation.start()
