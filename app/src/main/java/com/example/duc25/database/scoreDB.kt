@@ -20,7 +20,7 @@ class scoreDB(var context: Context): SQLiteOpenHelper(context, "score.db", null,
 
     fun insertScore(name: String, score: Int?){
         val db = this.writableDatabase
-        var value = ContentValues()
+        val value = ContentValues()
         value.put("name", name)
         value.put("score", score)
         db.insert("scoreGame", null, value)
@@ -28,7 +28,7 @@ class scoreDB(var context: Context): SQLiteOpenHelper(context, "score.db", null,
 
     fun updateScore(name: String, score: Int?){
         val db = this.writableDatabase
-        var value = ContentValues()
+        val value = ContentValues()
         value.put("score", score)
         db.update("scoreGame", value, "name=?", arrayOf(name))
     }

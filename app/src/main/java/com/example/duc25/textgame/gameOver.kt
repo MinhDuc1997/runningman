@@ -13,27 +13,28 @@ import com.example.duc25.database.scoreDB
  * Created by duc25 on 3/4/2018.
  */
 class gameOver(context: Context, var screenW: Float, var screenH: Float): View(context) {
-    val paint = Paint(Paint.ANTI_ALIAS_FLAG)
+    private val paint = Paint(Paint.ANTI_ALIAS_FLAG)
     var score: Int? = null
-    val scoredb = scoreDB(context)
-    val name_device:String = android.os.Build.MODEL
+    private val scoredb = scoreDB(context)
+    private val name_device:String = android.os.Build.MODEL
+
     override fun onDraw(canans: Canvas){
         drawGameOver(canans)
     }
 
-    fun insertScore(){
+    private fun insertScore(){
         scoredb.insertScore(name_device, score)
     }
 
-    fun readScore(): Int{
+    private fun readScore(): Int{
         return scoredb.readScore()
     }
 
-    fun updateScore(){
+    private fun updateScore(){
         scoredb.updateScore(name_device, score)
     }
 
-    fun drawGameOver(canans: Canvas){
+    private fun drawGameOver(canans: Canvas){
         insertScore()
         if(score!! > readScore()){
             updateScore()

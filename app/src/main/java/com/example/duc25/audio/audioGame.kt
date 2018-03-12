@@ -12,8 +12,8 @@ import com.example.duc25.runningman.R
 class audioGame(var context: Context){
     var bgAudio = MediaPlayer.create(context, R.raw.fantasy_game_background)
     val audioSP = SoundPool(1, STREAM_MUSIC, 0)
-    val audioJid = audioSP.load(context, R.raw.bubble, 1)
-    val audioGoverId = audioSP.load(context, R.raw.game_over, 1)
+    private val audioJid = audioSP.load(context, R.raw.bubble, 1)
+    private val audioGoverId = audioSP.load(context, R.raw.game_over, 1)
 
     fun backgroundAudio(){
         bgAudio = MediaPlayer.create(context, R.raw.fantasy_game_background)

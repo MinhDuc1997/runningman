@@ -12,13 +12,13 @@ import java.util.*
  * Created by duc25 on 3/7/2018.
  */
 class Star(context: Context, var screenW: Float, var screenH: Float, var XX: Float): View(context) {
-    val paint = Paint(Paint.ANTI_ALIAS_FLAG)//pass param khử răng cưa
-    var starX = XX
+    private val paint = Paint(Paint.ANTI_ALIAS_FLAG)//pass param khử răng cưa
+    private var starX = XX
     val valueAnimation = ValueAnimator.ofFloat(starX, 0F)
-    var check = 1
-    val random = Random()
-    var rand = random(0F, 150F)
-    var rand1 = random(0F, 50F)
+    private var check = 1
+    private val random = Random()
+    private var rand = random(0F, 150F)
+    private var rand1 = random(0F, 50F)
 
     override fun onDraw(canvas: Canvas){
         drawStar(canvas)
@@ -27,22 +27,22 @@ class Star(context: Context, var screenW: Float, var screenH: Float, var XX: Flo
         }
     }
 
-    fun random(from: Float, to: Float): Float{
+    private fun random(from: Float, to: Float): Float{
         return random.nextInt(to.toInt() - from.toInt()) + from
     }
 
-    fun drawStar(canvas: Canvas){
+    private fun drawStar(canvas: Canvas){
         paint.setARGB(255, 254, 255, 253)
-        paint.setStrokeWidth(screenW*0.003F)//set độ dày
+        paint.strokeWidth = screenW*0.003F//set độ dày
         for(i in (screenH*0.32F).toInt() downTo 0 ) {
             if(i%200 == 0){
                 //canvas.drawLine(i.toFloat(), rainY, i.toFloat(), rainY+(screenH*0.015F), paint)
-                canvas.drawPoint(starX + (screenW * (rand1 * 0.005F)), i.toFloat() + (screenW * (rand * 0.0007F)), paint)
+                canvas.drawPoint(starX + (screenW * (rand1 * 0.001F)), i.toFloat() + (screenW * (rand * 0.0007F)), paint)
             }
         }
     }
 
-    fun moveStar(){
+    private fun moveStar(){
         check = 0
         valueAnimation.addUpdateListener {
             val value = it.animatedValue as Float

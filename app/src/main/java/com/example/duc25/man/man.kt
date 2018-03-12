@@ -18,12 +18,12 @@ import kotlin.concurrent.scheduleAtFixedRate
 
 class Man(contex: Context, var screenW: Float, var screenH: Float): View(contex){
     var bitmap = BitmapFactory.decodeResource(resources, R.drawable.step1)
-    var x1: Float = screenW*0.15F
-    var y1: Float = screenH*0.72F
-    val paint = Paint(Paint.ANTI_ALIAS_FLAG)//pass param khử răng cưa
+    private var x1: Float = screenW*0.15F
+    private var y1: Float = screenH*0.72F
+    private val paint = Paint(Paint.ANTI_ALIAS_FLAG)//pass param khử răng cưa
     val valueAnimation = ValueAnimator.ofFloat(y1, screenH*0.3F)
     val timer = Timer()
-    var run = 1
+    private var run = 1
     var jum = 1 //when gameover set jump = 0 don't start valueAnimation after cancel
     var Audio = audioGame(contex)
     var time: Long = 0
@@ -50,12 +50,12 @@ class Man(contex: Context, var screenW: Float, var screenH: Float): View(contex)
         }
     }
 
-    fun drawMan(canvas: Canvas){
+    private fun drawMan(canvas: Canvas){
         canvas.drawBitmap(Bitmap.createScaledBitmap(bitmap, (screenW*0.07).toInt(), (screenW*0.07).toInt(), true)
                 , x1, y1, paint)
     }
 
-    fun moveMan(){
+    private fun moveMan(){
         valueAnimation.addUpdateListener {
             val value = it.animatedValue as Float
             if(value>0){
@@ -120,8 +120,5 @@ class Man(contex: Context, var screenW: Float, var screenH: Float): View(contex)
             postInvalidateOnAnimation()
         }
 
-        override fun onPostExecute(result: Float?) {
-            super.onPostExecute(result)
-        }
     }
 }

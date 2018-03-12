@@ -12,14 +12,14 @@ import java.util.*
  * Created by duc25 on 1/26/2018.
  */
 class Land(context: Context, var screenW: Float, var screenH: Float): View(context){
-    val paint = Paint(Paint.ANTI_ALIAS_FLAG)//pass param khử răng cưa
-    var random = Random()
-    var nearArray = arrayOf<Float>(screenW, screenW)
-    var randArray = arrayOf<Float>(random(65F, 80F), random(65F, 80F))
+    private val paint = Paint(Paint.ANTI_ALIAS_FLAG)//pass param khử răng cưa
+    private var random = Random()
+    protected var nearArray = arrayOf<Float>(screenW, screenW)
+    protected var randArray = arrayOf<Float>(random(65F, 80F), random(65F, 80F))
     val valueAnimation = ValueAnimator.ofFloat(nearArray[0], 0F)//giam tu trai qua phai
     val valueAnimation1 = ValueAnimator.ofFloat(nearArray[1], 0F)
-    var checkMove = arrayOf<Int>(1, 1)
-    var makeCol = 0
+    private var checkMove = arrayOf<Int>(1, 1)
+    private var makeCol = 0
     var time: Long = 0
 
     override fun onDraw(canvas: Canvas){
@@ -39,24 +39,24 @@ class Land(context: Context, var screenW: Float, var screenH: Float): View(conte
         }
     }
 
-    fun random(from: Float, to: Float): Float{
+    private fun random(from: Float, to: Float): Float{
         return random.nextInt(to.toInt() - from.toInt()) + from
     }
 
-    fun drawLand(canvas: Canvas){
+    private fun drawLand(canvas: Canvas){
         val paint = Paint(Paint.ANTI_ALIAS_FLAG)//pass param khử răng cưa
         paint.setARGB(255, 77, 38, 0)
-        paint.setStrokeWidth(screenW*2)
+        paint.strokeWidth = screenW*2
         canvas.drawLine(0F, (screenH*0.72F + screenW*0.07F), 0F, screenH, paint)
     }
 
-    fun drawCollums(canvas: Canvas, hight: Float, near: Float){
+    private fun drawCollums(canvas: Canvas, hight: Float, near: Float){
         paint.setARGB(255, 77, 38, 0)
-        paint.setStrokeWidth(screenW*0.02F)
+        paint.strokeWidth = screenW*0.02F
         canvas.drawLine(near, (screenH*0.72F + screenW*0.07F), near, ((screenH/100)*hight), paint)
     }
 
-    fun moveCollum(Col: Int){
+    private fun moveCollum(Col: Int){
         if(Col == 1) {
             checkMove[0] = 0
             valueAnimation.addUpdateListener {

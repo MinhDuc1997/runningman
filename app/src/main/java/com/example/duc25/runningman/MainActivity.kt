@@ -62,7 +62,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun getWidthHeigh(screen: String): Float{
+    private fun getWidthHeigh(screen: String): Float{
         val display = windowManager.defaultDisplay
         val size = Point()
         var value = 0

@@ -6,24 +6,21 @@ import android.graphics.Point
 import android.os.AsyncTask
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import android.view.View
 import android.view.WindowManager
-import android.widget.Toast
 import com.example.duc25.audio.audioGame
 import kotlinx.android.synthetic.main.activity_in_game.*
-import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
 import kotlin.concurrent.schedule
 import kotlin.concurrent.scheduleAtFixedRate
 
 class InGameActivity : AppCompatActivity() {
-    var Land: Land? = null
-    var Man: Man? = null
-    var Star = arrayOfNulls<Star>(size = 100)
-    var textGame: textGame? = null
-    var game_Over = 0
-    var Audio: audioGame? = null
-    var level = ""
+    protected var Land: Land? = null
+    protected var Man: Man? = null
+    protected var Star = arrayOfNulls<Star>(size = 100)
+    protected var textGame: textGame? = null
+    protected var game_Over = 0
+    protected var Audio: audioGame? = null
+    private var level = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,9 +51,9 @@ class InGameActivity : AppCompatActivity() {
         Man = Man(this, screenW, screenH)
         when(level){
             "easy" -> Man!!.time = (screenH*0.3F/((screenH*0.3F)*0.003F)).toLong()
-            "medium" -> Man!!.time = (screenH*0.3F/((screenH*0.3F)*0.0043F)).toLong()
+            "medium" -> Man!!.time = (screenH*0.3F/((screenH*0.3F)*0.004F)).toLong()
             "hard" -> Man!!.time = (screenH*0.3F/((screenH*0.3F)*0.0047F)).toLong()
-            else -> Man!!.time = (screenH*0.3F/((screenH*0.3F)*0.0043F)).toLong()
+            else -> Man!!.time = (screenH*0.3F/((screenH*0.3F)*0.004F)).toLong()
         }
         GamePlay.addView(Man)
         /* --Land--*/
@@ -75,7 +72,7 @@ class InGameActivity : AppCompatActivity() {
         GameUpdate(screenW).execute()
     }
 
-    fun getWidthHeigh(screen: String): Float{
+    private fun getWidthHeigh(screen: String): Float{
         val display = windowManager.defaultDisplay
         val size = Point()
         var value = 0
@@ -92,10 +89,10 @@ class InGameActivity : AppCompatActivity() {
 
     @SuppressLint("StaticFieldLeak")
     inner class GameUpdate(val screenW: Float): AsyncTask<Void, String, Float>() {
-        val timer = Timer()
-        var columOver = 0
+        private val timer = Timer()
+        private var columOver = 0
 
-        fun Score(){
+        private fun Score(){
             if(game_Over == 0) {
                 if((Land!!.getXCollum(1) + screenW * 0.02F) < Man!!.getXMan() || (Land!!.getXCollum(0) + screenW * 0.02F) < Man!!.getXMan()) {
                     columOver++
@@ -108,7 +105,7 @@ class InGameActivity : AppCompatActivity() {
             }
         }
 
-        fun gameOver(){
+        private fun gameOver(){
             if(Land!!.getXCollum(1) <= (Man!!.getXMan()+Man!!.getWidthMan()) && Land!!.getXCollum(1)>=Man!!.getXMan()  && (Man!!.getYMan() +Man!!.getHeightMan()) >= Land!!.getYCollum(1) ||
                     Land!!.getXCollum(0) <= (Man!!.getXMan()+Man!!.getWidthMan()) && Land!!.getXCollum(0)>=Man!!.getXMan()  && (Man!!.getYMan() +Man!!.getHeightMan()) >= Land!!.getYCollum(0)){
                 game_Over++
@@ -118,7 +115,7 @@ class InGameActivity : AppCompatActivity() {
             }
         }
 
-        fun Update(){
+        private fun Update(){
             timer.scheduleAtFixedRate(0, 10){
                 gameOver()
                 Score()
