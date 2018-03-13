@@ -18,10 +18,10 @@ import kotlin.concurrent.scheduleAtFixedRate
 
 class Man(contex: Context, var screenW: Float, var screenH: Float): View(contex){
     var bitmap = BitmapFactory.decodeResource(resources, R.drawable.step1)
-    private var x1: Float = screenW*0.15F
-    private var y1: Float = screenH*0.72F
+    private var PosX: Float = screenW*0.15F
+    private var PosY: Float = screenH*0.72F
     private val paint = Paint(Paint.ANTI_ALIAS_FLAG)//pass param khử răng cưa
-    val valueAnimation = ValueAnimator.ofFloat(y1, screenH*0.3F)
+    val valueAnimation = ValueAnimator.ofFloat(PosY, screenH*0.3F)
     val timer = Timer()
     private var run = 1
     var jum = 1 //when gameover set jump = 0 don't start valueAnimation after cancel
@@ -52,14 +52,14 @@ class Man(contex: Context, var screenW: Float, var screenH: Float): View(contex)
 
     private fun drawMan(canvas: Canvas){
         canvas.drawBitmap(Bitmap.createScaledBitmap(bitmap, (screenW*0.07).toInt(), (screenW*0.07).toInt(), true)
-                , x1, y1, paint)
+                , PosX, PosY, paint)
     }
 
     private fun moveMan(){
         valueAnimation.addUpdateListener {
             val value = it.animatedValue as Float
             if(value>0){
-                y1 = value
+                PosY = value
             }else{
                 valueAnimation.cancel()
             }
@@ -74,11 +74,11 @@ class Man(contex: Context, var screenW: Float, var screenH: Float): View(contex)
     }
 
     fun getYMan(): Float{
-        return y1
+        return PosY
     }
 
     fun getXMan(): Float{
-        return x1
+        return PosX
     }
 
     fun getWidthMan(): Float{
