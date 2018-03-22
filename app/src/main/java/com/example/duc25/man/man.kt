@@ -11,27 +11,33 @@ import android.graphics.Paint
 import android.os.AsyncTask
 import android.view.MotionEvent
 import android.view.View
+import android.view.animation.AccelerateInterpolator
 import android.view.animation.LinearInterpolator
 import com.example.duc25.audio.audioGame
 import java.util.*
 import kotlin.concurrent.scheduleAtFixedRate
 
+@SuppressLint("ViewConstructor")
 class Man(contex: Context, var screenW: Float, var screenH: Float): View(contex){
     var bitmap = BitmapFactory.decodeResource(resources, R.drawable.step1)
-    private var PosX: Float = screenW*0.15F
-    private var PosY: Float = screenH*0.72F
+    private var PosX: Float = screenW*0F
+    private var PosY: Float = screenH*0.74F
     private val paint = Paint(Paint.ANTI_ALIAS_FLAG)//pass param khử răng cưa
-    val valueAnimation = ValueAnimator.ofFloat(PosY, screenH*0.3F)
+    val valueAnimation = ValueAnimator.ofFloat(PosY, screenH*0.25F)
+    val valueAnimation1 = ValueAnimator.ofFloat(  0.12F, 0F)
     val timer = Timer()
     private var run = 1
     var jum = 1 //when gameover set jump = 0 don't start valueAnimation after cancel
+    var moveR = 1
+    var moveRok = 0
     var Audio = audioGame(contex)
     var time: Long = 0
 
     //control jump
+    @SuppressLint("ClickableViewAccessibility")
     override fun onTouchEvent(event: MotionEvent): Boolean{
         if(event.action == MotionEvent.ACTION_DOWN){
-            if(getYMan() >= (screenH*0.72F-10F)) {
+            if(getYMan() >= (screenH*0.74-10F) && moveRok == 1) {
                 if(jum == 1) {
                     valueAnimation.cancel()
                     moveMan()
@@ -44,15 +50,36 @@ class Man(contex: Context, var screenW: Float, var screenH: Float): View(contex)
 
     override fun onDraw(canvas: Canvas){
         drawMan(canvas)
-        if(run == 1){
-            run = 0
-            ManRun().execute()
+        if(moveR == 1) {
+            moveRight()
         }
     }
 
     private fun drawMan(canvas: Canvas){
-        canvas.drawBitmap(Bitmap.createScaledBitmap(bitmap, (screenW*0.07).toInt(), (screenW*0.07).toInt(), true)
+        canvas.drawBitmap(Bitmap.createScaledBitmap(bitmap, (screenW*0.06).toInt(), (screenW*0.06).toInt(), true)
                 , PosX, PosY, paint)
+    }
+
+    private fun moveRight(){
+        moveR = 0
+        valueAnimation1.addUpdateListener {
+            val value = it.animatedValue as Float
+            if(value>0){
+                PosX = screenW*(0.12F-value)
+                postInvalidateOnAnimation()
+            }else{
+                moveRok = 1
+                valueAnimation1.cancel()
+                if(run == 1){
+                    run = 0
+                    ManRun().execute()
+                }
+            }
+        }
+
+        valueAnimation1.duration = 350
+        valueAnimation1.interpolator = LinearInterpolator()
+        valueAnimation1.start()
     }
 
     private fun moveMan(){
@@ -68,8 +95,8 @@ class Man(contex: Context, var screenW: Float, var screenH: Float): View(contex)
         valueAnimation.repeatMode = ValueAnimator.REVERSE
         valueAnimation.repeatCount = 1
         valueAnimation.duration = time
-        //valueAnimation.interpolator = AccelerateInterpolator(1.5f) // tang toc
-        valueAnimation.interpolator = LinearInterpolator()
+        valueAnimation.interpolator = AccelerateInterpolator(0.7f) // tang toc
+        //valueAnimation.interpolator = LinearInterpolator()
         valueAnimation.start()
     }
 
@@ -82,11 +109,11 @@ class Man(contex: Context, var screenW: Float, var screenH: Float): View(contex)
     }
 
     fun getWidthMan(): Float{
-        return screenW*0.07F
+        return screenW*0.06F
     }
 
     fun getHeightMan(): Float{
-        return screenW*0.07F
+        return screenW*0.06F
     }
 
 
@@ -94,8 +121,8 @@ class Man(contex: Context, var screenW: Float, var screenH: Float): View(contex)
     inner class ManRun: AsyncTask<Void, String, Float>() {
         override fun doInBackground(vararg p0: Void?): Float {
             var i = 0
-            timer.scheduleAtFixedRate(0, 90){
-                if(getYMan() == (screenH*0.72F)) {
+            timer.scheduleAtFixedRate(0, 100){
+                if(getYMan() == (screenH*0.74F)) {
                     if (i == 0) {
                         i = 1
                         publishProgress("1")

@@ -41,16 +41,16 @@ class InGameActivity : AppCompatActivity() {
         Audio!!.backgroundAudio()
         //Audio!!.audioGOver.stop()
         /*--Star--*/
-        var j:Float = 0F
-        for(i in 0 until 100){
-            Star[i] = Star(this, screenW, screenH, 0F+(screenW*j))
+        var j = 0F
+        for(i in 0 until 40){
+            Star[i] = Star(this, screenW, screenH, screenW + (screenW*j))
             GamePlay.addView(Star[i])
             j += 0.02F
         }
         /* --Man--*/
         Man = Man(this, screenW, screenH)
         when(level){
-            "easy" -> Man!!.time = (screenH*0.3F/((screenH*0.3F)*0.003F)).toLong()
+            "easy" -> Man!!.time = (screenH*0.3F/((screenH*0.3F)*0.0025F)).toLong()
             "medium" -> Man!!.time = (screenH*0.3F/((screenH*0.3F)*0.004F)).toLong()
             "hard" -> Man!!.time = (screenH*0.3F/((screenH*0.3F)*0.0047F)).toLong()
             else -> Man!!.time = (screenH*0.3F/((screenH*0.3F)*0.004F)).toLong()
@@ -59,8 +59,8 @@ class InGameActivity : AppCompatActivity() {
         /* --Land--*/
         Land = Land(this, screenW, screenH)
         when(level){
-            "easy" -> Land!!.time = (screenW/(screenW*0.00041F)).toLong()
-            "medium" -> Land!!.time = (screenW/(screenW*0.00061F)).toLong()
+            "easy" -> Land!!.time = (screenW/(screenW*0.00031F)).toLong()
+            "medium" -> Land!!.time = (screenW/(screenW*0.00055F)).toLong()
             "hard" -> Land!!.time = (screenW/(screenW*0.00076F)).toLong()
             else -> Land!!.time = (screenW/(screenW*0.00061F)).toLong()
         }
@@ -70,6 +70,10 @@ class InGameActivity : AppCompatActivity() {
         GamePlay.addView(textGame)
         /*--GameUpDate*/
         GameUpdate(screenW).execute()
+    }
+
+    override fun onBackPressed() {
+        //super.onBackPressed()
     }
 
     private fun getWidthHeigh(screen: String): Float{
@@ -83,7 +87,6 @@ class InGameActivity : AppCompatActivity() {
         if(screen == "height"){
             value = size.y
         }
-        //Toast.makeText(this@InGameActivity, value.toString(),Toast.LENGTH_LONG).show()
         return value.toFloat()
     }
 
@@ -94,7 +97,7 @@ class InGameActivity : AppCompatActivity() {
 
         private fun Score(){
             if(game_Over == 0) {
-                if((Land!!.getXCollum(1) + screenW * 0.02F) < Man!!.getXMan() || (Land!!.getXCollum(0) + screenW * 0.02F) < Man!!.getXMan()) {
+                if((Land!!.getXCollum(1) + screenW * 0.015F) < Man!!.getXMan() || (Land!!.getXCollum(0) + screenW * 0.015F) < Man!!.getXMan()) {
                     columOver++
                     if(columOver == 1) {
                         publishProgress("UpdateScore")
@@ -116,7 +119,7 @@ class InGameActivity : AppCompatActivity() {
         }
 
         private fun Update(){
-            timer.scheduleAtFixedRate(0, 10){
+            timer.scheduleAtFixedRate(0, 5){
                 gameOver()
                 Score()
             }
@@ -133,33 +136,30 @@ class InGameActivity : AppCompatActivity() {
                 textGame!!.updateScore()
             }
             if(values[0] == "GameOver"){
-                Audio!!.audioGameOver()
                 Man!!.jum = 0
                 Man!!.valueAnimation.cancel()
                 Man!!.timer.cancel()
-                Man!!.Audio.audioSP.stop(1)
+                Man!!.Audio.audioSP.stop(0)
                 Man!!.Audio.audioSP.release()
                 Land!!.valueAnimation.cancel()
                 Land!!.valueAnimation1.cancel()
-                for(i in 0 until 50){
+                for(i in 0 until 40){
                     Star[i]!!.valueAnimation.cancel()
                 }
+                Audio!!.audioGameOver()
                 Audio!!.bgAudio.stop()
                 Audio!!.bgAudio.release()
-                timer.schedule(1000){
-                    Audio!!.audioSP.stop(0)
+                timer.schedule(3000){
+                    Audio!!.audioSP.stop(1)
                     Audio!!.audioSP.release()
                 }
                 val intent = Intent(this@InGameActivity, GameOverActivity::class.java)
                 intent.putExtra("score", textGame!!.getScore().toString())
-                intent.putExtra("level", "$level")
+                intent.putExtra("level", level)
                 finish()
                 startActivity(intent)
             }
         }
 
-        override fun onPostExecute(result: Float?) {
-            super.onPostExecute(result)
-        }
     }
 }

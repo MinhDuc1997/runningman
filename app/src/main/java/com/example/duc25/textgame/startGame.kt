@@ -1,10 +1,13 @@
 package com.example.duc25.runningman
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.*
 import android.view.View
 import android.widget.Button
 
+@SuppressLint("ViewConstructor")
+@Suppress("DEPRECATION")
 /**
  * Created by duc25 on 3/10/2018.
  */
@@ -18,6 +21,7 @@ class startGame(context: Context,var screenW: Float,var screenH: Float): View(co
         drawCopyRight(canvas)
     }
 
+    @SuppressLint("SetTextI18n")
     fun drawButtonPlayGame(): Button {
         val button = Button(context)
         button.text = "TAP TO PLAY"
@@ -31,6 +35,7 @@ class startGame(context: Context,var screenW: Float,var screenH: Float): View(co
         return button
     }
 
+    @SuppressLint("SetTextI18n")
     fun drawButtonEasy(): Button {
         val button = Button(context)
         button.text = "Easy"
@@ -44,6 +49,7 @@ class startGame(context: Context,var screenW: Float,var screenH: Float): View(co
         return button
     }
 
+    @SuppressLint("SetTextI18n")
     fun drawButtonMedium(): Button {
         val button = Button(context)
         button.text = "Medium"
@@ -57,6 +63,7 @@ class startGame(context: Context,var screenW: Float,var screenH: Float): View(co
         return button
     }
 
+    @SuppressLint("SetTextI18n")
     fun drawButtonHard(): Button {
         val button = Button(context)
         button.text = "Hard"

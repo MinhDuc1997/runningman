@@ -1,5 +1,6 @@
 package com.example.duc25.runningman
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
@@ -9,6 +10,8 @@ import android.view.View
 import android.widget.Button
 import com.example.duc25.database.scoreDB
 
+@Suppress("DEPRECATION")
+@SuppressLint("ViewConstructor")
 /**
  * Created by duc25 on 3/4/2018.
  */
@@ -49,6 +52,7 @@ class gameOver(context: Context, var screenW: Float, var screenH: Float): View(c
         canans.drawText("Score: $score  Max: " + readScore(), screenW*0.5F, screenH*0.325F, paint)
     }
 
+    @SuppressLint("SetTextI18n")
     fun drawButtonPlayAgain(): Button{
         val button = Button(context)
         button.text = "TAP TO AGAIN"
@@ -62,6 +66,7 @@ class gameOver(context: Context, var screenW: Float, var screenH: Float): View(c
         return button
     }
 
+    @SuppressLint("SetTextI18n")
     fun drawButtonMenu(): Button{
         val button = Button(context)
         button.text = "Menu"
