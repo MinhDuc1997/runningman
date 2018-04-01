@@ -50,19 +50,19 @@ class InGameActivity : AppCompatActivity() {
         /* --Man--*/
         Man = Man(this, screenW, screenH)
         when(level){
-            "easy" -> Man!!.time = (screenH*0.3F/((screenH*0.3F)*0.0025F)).toLong()
-            "medium" -> Man!!.time = (screenH*0.3F/((screenH*0.3F)*0.004F)).toLong()
-            "hard" -> Man!!.time = (screenH*0.3F/((screenH*0.3F)*0.0047F)).toLong()
-            else -> Man!!.time = (screenH*0.3F/((screenH*0.3F)*0.004F)).toLong()
+            "easy" -> Man!!.time = (screenH*0.3F/((screenH*0.3F)*0.0055F)).toLong()
+            "medium" -> Man!!.time = (screenH*0.3F/((screenH*0.3F)*0.0063F)).toLong()
+            "hard" -> Man!!.time = (screenH*0.3F/((screenH*0.3F)*0.0077F)).toLong()
+            else -> Man!!.time = (screenH*0.3F/((screenH*0.3F)*0.006F)).toLong()
         }
         GamePlay.addView(Man)
         /* --Land--*/
         Land = Land(this, screenW, screenH)
         when(level){
-            "easy" -> Land!!.time = (screenW/(screenW*0.00031F)).toLong()
-            "medium" -> Land!!.time = (screenW/(screenW*0.00055F)).toLong()
-            "hard" -> Land!!.time = (screenW/(screenW*0.00076F)).toLong()
-            else -> Land!!.time = (screenW/(screenW*0.00061F)).toLong()
+            "easy" -> Land!!.time = (screenW/(screenW*0.0007F)).toLong()
+            "medium" -> Land!!.time = (screenW/(screenW*0.00088F)).toLong()
+            "hard" -> Land!!.time = (screenW/(screenW*0.0012F)).toLong()
+            else -> Land!!.time = (screenW/(screenW*0.00088F)).toLong()
         }
         GamePlay.addView(Land)
         /*--textGame*/
